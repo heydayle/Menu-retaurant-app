@@ -2,7 +2,7 @@ const color = require("./src/assets/colors");
 
 module.exports = {
   prefix: "tw-",
-  purge: ["./public/**/*.html", "./src/**/*.{vue,js,ts,jsx,tsx}"],
+  purge: ["./public/**/*.html", "./src/**/*.vue"],
   content: [],
   darkMode: false,
   theme: {
