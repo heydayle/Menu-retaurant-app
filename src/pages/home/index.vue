@@ -1,11 +1,11 @@
 <template>
-  <div>
+  <div class="tw-bg-gray-900 tw-py-6" style="height: 100vh">
     <div>
       <GridLayout
         :layout.sync="layout"
         :col-num="8"
         :row-height="30"
-        :is-draggable="false"
+        :is-draggable="draggable"
         :is-resizable="false"
         :vertical-compact="false"
         :use-css-transforms="false"
@@ -19,19 +19,13 @@
           :w="item.w"
           :h="item.h"
           :i="item.i"
-          :style="{
-            background: `url(${item.cover})`,
-            backgroundSize: 'cover',
-          }"
-          class="tw-p-4 tw-rounded-lg tw-border tw-border-solid hover:tw-border-green-500 tw-duration-900 tw-transition"
+          class="tw-p-4 tw-rounded-lg tw-border tw-border-solid tw-border-gray-300 tw-bg-gray-700 hover:tw-drop-shadow-xl"
         >
-          <div class="tw-flex tw-space-x-4 tw-items-center">
-            <span v-html="item.img"></span>
-            <span class="tw-text-gray-600 tw-font-semibold">{{ item.i }}</span>
-          </div>
+          <MenuItem :item="item" @select="selectMenuItem" />
         </GridItem>
       </GridLayout>
     </div>
+    <SwiperMenu :isShow="isShowList" :products="menuItem" />
   </div>
 </template>
 
@@ -42,6 +36,8 @@ export default {
   components: {
     GridLayout: VueGridLayout.GridLayout,
     GridItem: VueGridLayout.GridItem,
+    MenuItem: () => import("./../../components/menuItem/index.vue"),
+    SwiperMenu: () => import("./../../components/sliderItems/index"),
   },
   data() {
     return {
@@ -49,7 +45,17 @@ export default {
       draggable: true,
       resizable: true,
       index: 0,
+
+      menuItem: null,
+      isShowSwiper: false,
+      isShowList: false,
     };
+  },
+  methods: {
+    selectMenuItem(item) {
+      this.menuItem = item;
+      this.isShowList = true;
+    },
   },
 };
 </script>

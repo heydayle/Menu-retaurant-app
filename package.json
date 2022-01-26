@@ -12,8 +12,10 @@
     "autoprefixer": "^9",
     "core-js": "^3.6.5",
     "postcss": "^7",
+    "swiper": "^7.4.1",
     "tailwindcss": "npm:@tailwindcss/postcss7-compat",
     "vue": "^2.6.11",
+    "vue-awesome-swiper": "^4.1.1",
     "vue-grid-layout": "^2.3.12",
     "vue-router": "^3.5.3",
     "vuetify": "^2.4.0"
