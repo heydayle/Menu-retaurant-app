@@ -1,15 +1,14 @@
 <template>
   <div>
-    Homepages
     <div>
       <GridLayout
         :layout.sync="layout"
         :col-num="8"
         :row-height="30"
-        :is-draggable="draggable"
+        :is-draggable="false"
         :is-resizable="false"
-        :vertical-compact="true"
-        :use-css-transforms="true"
+        :vertical-compact="false"
+        :use-css-transforms="false"
       >
         <GridItem
           v-for="(item, index) in layout"
@@ -20,14 +19,17 @@
           :w="item.w"
           :h="item.h"
           :i="item.i"
-          class="tw-p-4 tw-rounded-lg"
-          :style="{ background: `url('../../assets/logo.png')` }"
+          :style="{
+            background: `url(${item.cover})`,
+            backgroundSize: 'cover',
+          }"
+          class="tw-p-4 tw-rounded-lg tw-border tw-border-solid hover:tw-border-green-500 tw-duration-900 tw-transition"
         >
-          <img :src="'../../assets/' + item.img" />
-          <span class="tw-text-gray-600 tw-font-semibold">{{
-            item.i
-          }}</span></GridItem
-        >
+          <div class="tw-flex tw-space-x-4 tw-items-center">
+            <span v-html="item.img"></span>
+            <span class="tw-text-gray-600 tw-font-semibold">{{ item.i }}</span>
+          </div>
+        </GridItem>
       </GridLayout>
     </div>
   </div>
@@ -35,6 +37,7 @@
 
 <script>
 import VueGridLayout from "vue-grid-layout";
+import { menu } from "../../misc/enums";
 export default {
   components: {
     GridLayout: VueGridLayout.GridLayout,
@@ -42,24 +45,7 @@ export default {
   },
   data() {
     return {
-      layout: [
-        {
-          x: 0,
-          y: 0,
-          w: 2,
-          h: 7.5,
-          i: "1. Coffee",
-          img: "logo.png",
-          static: true,
-        },
-        { x: 2, y: 0, w: 2, h: 7.5, i: "2. Tea", img: "", static: false },
-        { x: 4, y: 0, w: 2, h: 7.5, i: "3", img: "", static: false },
-        { x: 6, y: 0, w: 2, h: 7.5, i: "4", img: "", static: false },
-        { x: 0, y: 2, w: 2, h: 7.5, i: "5", img: "", static: false },
-        { x: 2, y: 4, w: 2, h: 7.5, i: "6", img: "", static: false },
-        { x: 4, y: 6, w: 2, h: 7.5, i: "7", img: "", static: false },
-        { x: 6, y: 8, w: 2, h: 7.5, i: "8", img: "", static: false },
-      ],
+      layout: menu,
       draggable: true,
       resizable: true,
       index: 0,
