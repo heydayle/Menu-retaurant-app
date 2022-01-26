@@ -8,16 +8,15 @@
     persistent
     scrollable
   > -->
-  <v-card>
+  <v-card v-if="products.products">
     <div class="example-3d tw-bg-gray-900 tw-border-none">
       <swiper class="swiper" :options="swiperOption">
-        <swiper-slide>Slide 1</swiper-slide>
-        <swiper-slide>Slide 2</swiper-slide>
-        <swiper-slide>Slide 3</swiper-slide>
-        <swiper-slide>Slide 4</swiper-slide>
-        <swiper-slide>Slide 5</swiper-slide>
-        <swiper-slide>Slide 6</swiper-slide>
-        <swiper-slide>Slide 7</swiper-slide>
+        <swiper-slide v-for="(item, index) in products.products" :key="index">
+          <div>
+            <div>{{ item.name }}</div>
+            <div>{{ item.price }}</div>
+          </div>
+        </swiper-slide>
       </swiper>
     </div>
   </v-card>
@@ -35,6 +34,9 @@ export default {
   props: {
     isShow: {
       type: Boolean,
+    },
+    products: {
+      type: Array,
     },
   },
   data() {
@@ -74,6 +76,7 @@ export default {
 
   .swiper-slide {
     display: flex;
+    border-radius: 20px;
     justify-content: center;
     align-items: center;
     width: 300px;
@@ -81,7 +84,7 @@ export default {
     text-align: center;
     font-weight: bold;
     font-size: 4 * 2;
-    background-color: #2c8dfb;
+    background-color: #7c7c7c;
     background-position: center;
     background-size: cover;
     color: #fff;
