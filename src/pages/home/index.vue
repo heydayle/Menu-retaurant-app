@@ -5,7 +5,7 @@
         :layout.sync="layout"
         :col-num="8"
         :row-height="30"
-        :is-draggable="draggable"
+        :is-draggable="false"
         :is-resizable="false"
         :vertical-compact="false"
         :use-css-transforms="false"
@@ -25,7 +25,13 @@
         </GridItem>
       </GridLayout>
     </div>
-    <SwiperMenu :isShow="isShowList" :products="menuItem" />
+    <SwiperMenu
+      :isShow="isShowList"
+      :products="menuItem"
+      @onSelect="select"
+      @onClose="close"
+    />
+    <Cart :list="itemCart" />
   </div>
 </template>
 
@@ -38,6 +44,7 @@ export default {
     GridItem: VueGridLayout.GridItem,
     MenuItem: () => import("./../../components/menuItem/index.vue"),
     SwiperMenu: () => import("./../../components/sliderItems/index"),
+    Cart: () => import("./../../components/cart/index.vue"),
   },
   data() {
     return {
@@ -49,12 +56,20 @@ export default {
       menuItem: null,
       isShowSwiper: false,
       isShowList: false,
+
+      itemCart: [],
     };
   },
   methods: {
     selectMenuItem(item) {
       this.menuItem = item;
       this.isShowList = true;
+    },
+    select(data) {
+      this.itemCart.push(data);
+    },
+    close() {
+      this.isShowList = false;
     },
   },
 };
