@@ -31,7 +31,17 @@
       @onSelect="select"
       @onClose="close"
     />
-    <Cart :list="itemCart" />
+    <Cart :list="itemCart" @update="updateList" />
+    <div class="tw-absolute tw-top-0 tw-z-50 tw-left-1/2">
+      <v-alert
+        class="tw-bg-red-400"
+        color="red lighten-2"
+        border="top"
+        transition="scale-transition"
+        :value="isAlert"
+        >Removed</v-alert
+      >
+    </div>
   </div>
 </template>
 
@@ -56,6 +66,7 @@ export default {
       menuItem: null,
       isShowSwiper: false,
       isShowList: false,
+      isAlert: false,
 
       itemCart: [],
     };
@@ -68,6 +79,14 @@ export default {
     select(data) {
       this.itemCart.push(data);
     },
+    updateList(list) {
+      this.isAlert = true;
+      console.log(list);
+      this.itemCart = list;
+      setTimeout(() => {
+        this.isAlert = false;
+      }, 3000);
+    },
     close() {
       this.isShowList = false;
     },
@@ -75,4 +94,10 @@ export default {
 };
 </script>
 
-<style></style>
+<style lang="scss">
+.v-alert {
+  padding: 0.5rem;
+  background: rgb(255, 109, 133) !important;
+  color: #fff !important;
+}
+</style>

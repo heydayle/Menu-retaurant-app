@@ -10,7 +10,7 @@
           <span class="tw-text-gray-300">{{ list.length }}</span>
         </div>
       </div>
-      <v-btn icon dark large class="tw-p-6">
+      <v-btn icon dark large class="tw-p-6" @click="isShow = !isShow">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -34,14 +34,94 @@
         </svg>
       </v-btn>
     </div>
+    <v-dialog
+      v-model="isShow"
+      class="c-v-dialog-cart"
+      :overlay-color="'tw-bg-black'"
+      persistent
+    >
+      <v-card class="tw-max-w-96">
+        <v-card-title class="tw-flex tw-justify-between">
+          <div>Cart</div>
+          <div>
+            <v-btn light icon @click="isShow = false">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                xmlns:xlink="http://www.w3.org/1999/xlink"
+                aria-hidden="true"
+                role="img"
+                class="iconify iconify--eva tw-text-gray-300"
+                width="32"
+                height="32"
+                preserveAspectRatio="xMidYMid meet"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  fill="currentColor"
+                  d="M13.41 12l4.3-4.29a1 1 0 1 0-1.42-1.42L12 10.59l-4.29-4.3a1 1 0 0 0-1.42 1.42l4.3 4.29l-4.3 4.29a1 1 0 0 0 0 1.42a1 1 0 0 0 1.42 0l4.29-4.3l4.29 4.3a1 1 0 0 0 1.42 0a1 1 0 0 0 0-1.42z"
+                ></path>
+              </svg>
+            </v-btn>
+          </div>
+        </v-card-title>
+        <v-card-text v-if="list.length > 0">
+          <div class="tw-space-x-4 tw-font-semibold">
+            <span>Name</span>
+            <span>Sugar</span>
+            <span>Ice</span>
+          </div>
+          <div
+            v-for="(item, index) in list"
+            :key="index"
+            class="tw-flex tw-space-x-4 tw-items-center"
+          >
+            <div class="tw-w-14">{{ item.name }}</div>
+            <div class="tw-w-6">{{ item.sugar }}</div>
+            <div class="tw-min-w-10">{{ item.ice }}</div>
+            <div class="tw-min-w-10">
+              <v-btn light icon @click="removeItem(item)">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  xmlns:xlink="http://www.w3.org/1999/xlink"
+                  aria-hidden="true"
+                  role="img"
+                  class="iconify iconify--eva tw-text-red-300"
+                  width="22"
+                  height="22"
+                  preserveAspectRatio="xMidYMid meet"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    fill="currentColor"
+                    d="M13.41 12l4.3-4.29a1 1 0 1 0-1.42-1.42L12 10.59l-4.29-4.3a1 1 0 0 0-1.42 1.42l4.3 4.29l-4.3 4.29a1 1 0 0 0 0 1.42a1 1 0 0 0 1.42 0l4.29-4.3l4.29 4.3a1 1 0 0 0 1.42 0a1 1 0 0 0 0-1.42z"
+                  ></path>
+                </svg>
+              </v-btn>
+            </div>
+          </div>
+        </v-card-text>
+        <v-card-text v-else>Empty</v-card-text>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 
 <script>
 export default {
+  data() {
+    return {
+      isShow: false,
+    };
+  },
   props: {
     list: {
       type: Array,
+    },
+  },
+  methods: {
+    removeItem(item) {
+      this.list = this.list.filter((itemList) => itemList.id !== item.id);
+      this.$emit("update", this.list);
     },
   },
 };
@@ -50,5 +130,10 @@ export default {
 <style lang="scss">
 .c-cart {
   z-index: 50;
+}
+.c-v-dialog-cart {
+  .v-dialog {
+    max-width: 400px;
+  }
 }
 </style>
