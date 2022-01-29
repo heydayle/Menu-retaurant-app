@@ -31,7 +31,7 @@
       @onSelect="select"
       @onClose="close"
     />
-    <Cart :list="itemCart" @update="updateList" />
+    <Cart :list.sync="itemCart" :total="total" @update="updateList" />
     <div class="tw-absolute tw-top-10 tw-z-50 tw-left-1/2">
       <v-alert
         class="c-alert-remove tw-bg-red-400 tw-px-6"
@@ -78,6 +78,7 @@ export default {
       isAdd: false,
 
       itemCart: [],
+      total: 0,
       item: null,
     };
   },
@@ -90,6 +91,7 @@ export default {
       this.itemCart.push(data);
       this.item = data;
       this.isAdd = true;
+      this.updateTotal();
       setTimeout(() => {
         this.isAdd = false;
       }, 3000);
@@ -97,9 +99,13 @@ export default {
     updateList(list) {
       this.isAlert = true;
       this.itemCart = list;
+      this.updateTotal();
       setTimeout(() => {
         this.isAlert = false;
       }, 3000);
+    },
+    updateTotal() {
+      this.itemCart.forEach((item) => (this.total += parseFloat(item.price)));
     },
     close() {
       this.isShowList = false;

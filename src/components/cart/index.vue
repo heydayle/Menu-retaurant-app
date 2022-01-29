@@ -11,7 +11,7 @@
         <div
           class="tw-absolute tw--bottom-3 tw--left-2 tw-rounded-full tw-bg-green-500 tw-py-0.75 tw-px-2 tw-text-center"
         >
-          <span class="tw-text-gray-300">{{ list.length }}</span>
+          <span class="tw-text-gray-300">{{ listItem.length }}</span>
         </div>
       </div>
       <v-btn icon dark large class="tw-p-6" @click="isShow = !isShow">
@@ -68,14 +68,14 @@
             </v-btn>
           </div>
         </v-card-title>
-        <v-card-text v-if="list.length > 0">
+        <v-card-text v-if="listItem.length > 0">
           <div class="tw-space-x-4 tw-font-semibold">
             <span>Name</span>
             <span>Sugar</span>
             <span>Ice</span>
           </div>
           <div
-            v-for="(item, index) in list"
+            v-for="(item, index) in listItem"
             :key="index"
             class="tw-flex tw-space-x-4 tw-items-center"
           >
@@ -104,7 +104,7 @@
             </div>
           </div>
           <div class="tw-space-x-4 tw-font-semibold">
-            <span>Total: {{ total | currency }}</span>
+            <span class="tw-text-xl">Total: {{ total | currency }}</span>
           </div>
         </v-card-text>
         <v-card-text v-else>Empty</v-card-text>
@@ -123,18 +123,37 @@ export default {
   props: {
     list: {
       type: Array,
+      required: false,
+      default: null,
+    },
+    total: {
+      type: Number,
     },
   },
   computed: {
-    total() {
-      let total = 0;
-      this.list.forEach((item) => (total += parseFloat(item.price)));
-      return total;
+    listItem: {
+      get() {
+        return this.list;
+      },
+      set() {
+        this.$emit("update", this.list);
+      },
     },
+    // total: {
+    //   get: function () {
+    //     let total = 0;
+    //     let arr = this?.list ? this?.list : [];
+    //     arr.forEach((item) => (total += parseFloat(item.price)));
+    //     return total;
+    //   },
+    //   set: function () {
+    //     this.$emit("update", this.list);
+    //   },
+    // },
   },
   methods: {
     removeItem(item) {
-      this.list = this.list.filter((itemList) => itemList.id !== item.id);
+      this.list = this.list.filter((itemList) => itemList.uid !== item.uid);
       this.$emit("update", this.list);
     },
   },

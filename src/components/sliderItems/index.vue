@@ -10,7 +10,9 @@
     scrollable
   >
     <v-card v-if="products.products" dark class="tw-p-4">
-      <v-card-text class="tw-text-gray-300 tw-flex tw-justify-between tw-pt-2">
+      <v-card-text
+        class="c-v-card-swiper tw-text-gray-300 tw-flex tw-justify-between tw-pt-2"
+      >
         <div class="tw-font-semibold">{{ products.i }}</div>
         <div>
           <v-btn light icon @click="close">
@@ -37,9 +39,9 @@
         <swiper class="swiper" :options="swiperOption">
           <swiper-slide v-for="(item, index) in products.products" :key="index">
             <div>
-              <div>{{ item.name }}</div>
+              <div class="tw-text-xl">{{ item.name }}</div>
               <div>{{ item.price | currency }}</div>
-              <div>
+              <div class="tw-mt-4">
                 <v-menu
                   offset-y
                   left
@@ -59,10 +61,10 @@
                           <div><strong>Sugar</strong></div>
                         </template>
                         <v-radio
-                          v-for="n in 4"
-                          :key="n"
-                          :label="`${25 * n} %`"
-                          :value="n"
+                          v-for="(item, index) in SugarType"
+                          :key="index"
+                          :label="item.text"
+                          :value="item.value"
                         ></v-radio>
                       </v-radio-group>
                       <v-radio-group v-model="radioIce">
@@ -70,10 +72,10 @@
                           <div><strong>Ice</strong></div>
                         </template>
                         <v-radio
-                          v-for="n in 4"
-                          :key="n"
-                          :label="`${25 * n} %`"
-                          :value="n"
+                          v-for="(item, index) in IceType"
+                          :key="index"
+                          :label="item.text"
+                          :value="item.value"
                         ></v-radio>
                       </v-radio-group>
                       <v-btn
@@ -81,7 +83,7 @@
                         large
                         color="blue"
                         elevation="2"
-                        class="tw-bg-green-500 tw-mt-auto tw-mb-6"
+                        class="tw-bg-green-500 tw-m-auto"
                         @click="select(item, radioSugar, radioIce)"
                       >
                         <svg
@@ -115,8 +117,11 @@
 
 <script>
 import "swiper/swiper-bundle.css";
+import Swiper from "@/plugins/swiper";
 
-import Swiper from "./../../plugins/swiper";
+import { SugarType, IceType, ProcessingType } from "@/misc/enums";
+import { v4 as uuidv4 } from "uuid";
+
 export default {
   components: {
     ...Swiper.components,
@@ -131,6 +136,11 @@ export default {
   },
   data() {
     return {
+      //enums
+      SugarType,
+      IceType,
+      ProcessingType,
+
       swiperOption: {
         effect: "coverflow",
         grabCursor: true,
@@ -153,7 +163,12 @@ export default {
   },
   methods: {
     select(item, sugar, ice) {
-      this.$emit("onSelect", { ...item, sugar: sugar, ice: ice });
+      this.$emit("onSelect", {
+        ...item,
+        sugar: sugar,
+        ice: ice,
+        uid: uuidv4(),
+      });
     },
     close() {
       this.$emit("onClose");
@@ -175,16 +190,20 @@ export default {
   }
 }
 
+.c-v-card-swiper {
+  overflow: unset !important;
+}
+
 .example-3d {
   height: 100vh;
   width: 100%;
-  padding-top: 50px;
+  padding-top: 10px;
   padding-bottom: 50px;
   border: 0;
 }
 
 .swiper {
-  height: 100%;
+  height: 100vh;
   width: 100%;
 
   .swiper-slide {
@@ -196,7 +215,7 @@ export default {
     height: 300px;
     text-align: center;
     font-weight: bold;
-    font-size: 4 * 2;
+    font-size: 6 * 2;
     background-color: #7c7c7c;
     background-position: center;
     background-size: cover;
