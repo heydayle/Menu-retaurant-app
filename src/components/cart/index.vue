@@ -1,6 +1,10 @@
 <template>
   <div>
     <div
+      v-if="isShow"
+      class="c-overlay tw-absolute tw-z-40 tw-top-0 tw-bg-black tw-opacity-40 tw-w-full"
+    />
+    <div
       class="c-cart tw-absolute tw-z-index-50 tw-bottom-0 tw-right-0 tw-m-6 tw-rounded-full tw-bg-white"
     >
       <div class="tw-relative">
@@ -99,6 +103,9 @@
               </v-btn>
             </div>
           </div>
+          <div class="tw-space-x-4 tw-font-semibold">
+            <span>Total: {{ total | currency }}</span>
+          </div>
         </v-card-text>
         <v-card-text v-else>Empty</v-card-text>
       </v-card>
@@ -118,6 +125,13 @@ export default {
       type: Array,
     },
   },
+  computed: {
+    total() {
+      let total = 0;
+      this.list.forEach((item) => (total += parseFloat(item.price)));
+      return total;
+    },
+  },
   methods: {
     removeItem(item) {
       this.list = this.list.filter((itemList) => itemList.id !== item.id);
@@ -128,6 +142,9 @@ export default {
 </script>
 
 <style lang="scss">
+.c-overlay {
+  height: 100vh;
+}
 .c-cart {
   z-index: 50;
 }

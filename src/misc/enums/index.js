@@ -33,9 +33,9 @@ export const menu = [
           </svg>`,
     static: true,
     products: [
-      { id: 1, name: "Đen đá", price: "10.000" },
-      { id: 2, name: "Sữa đá", price: "12.000" },
-      { id: 3, name: "Bạc xỉu", price: "12.000" },
+      { id: 1, name: "Đen đá", price: 10000 },
+      { id: 2, name: "Sữa đá", price: 12000 },
+      { id: 3, name: "Bạc xỉu", price: 12000 },
     ],
   },
   {

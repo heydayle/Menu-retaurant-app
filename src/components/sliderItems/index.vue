@@ -38,7 +38,7 @@
           <swiper-slide v-for="(item, index) in products.products" :key="index">
             <div>
               <div>{{ item.name }}</div>
-              <div>{{ item.price }}</div>
+              <div>{{ item.price | currency }}</div>
               <div>
                 <v-menu
                   offset-y

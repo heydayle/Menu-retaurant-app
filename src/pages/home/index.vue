@@ -32,14 +32,22 @@
       @onClose="close"
     />
     <Cart :list="itemCart" @update="updateList" />
-    <div class="tw-absolute tw-top-0 tw-z-50 tw-left-1/2">
+    <div class="tw-absolute tw-top-10 tw-z-50 tw-left-1/2">
       <v-alert
-        class="tw-bg-red-400"
+        class="c-alert-remove tw-bg-red-400 tw-px-6"
         color="red lighten-2"
         border="top"
         transition="scale-transition"
         :value="isAlert"
         >Removed</v-alert
+      >
+      <v-alert
+        class="c-alert-add tw-bg-green-400 tw-px-6"
+        color="green lighten-2"
+        border="top"
+        transition="scale-transition"
+        :value="isAdd"
+        >Add <strong>{{ isAdd ? item.name : "" }}</strong> into cart</v-alert
       >
     </div>
   </div>
@@ -67,8 +75,10 @@ export default {
       isShowSwiper: false,
       isShowList: false,
       isAlert: false,
+      isAdd: false,
 
       itemCart: [],
+      item: null,
     };
   },
   methods: {
@@ -78,10 +88,14 @@ export default {
     },
     select(data) {
       this.itemCart.push(data);
+      this.item = data;
+      this.isAdd = true;
+      setTimeout(() => {
+        this.isAdd = false;
+      }, 3000);
     },
     updateList(list) {
       this.isAlert = true;
-      console.log(list);
       this.itemCart = list;
       setTimeout(() => {
         this.isAlert = false;
@@ -95,8 +109,14 @@ export default {
 </script>
 
 <style lang="scss">
-.v-alert {
-  padding: 0.5rem;
+.c-alert-add {
+  padding: 6px 8px !important;
+  background: rgb(77, 253, 144) !important;
+  color: #fff !important;
+}
+
+.c-alert-remove {
+  padding: 6px 8px !important;
   background: rgb(255, 109, 133) !important;
   color: #fff !important;
 }
