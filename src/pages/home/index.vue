@@ -105,6 +105,7 @@ export default {
       }, 3000);
     },
     updateTotal() {
+      this.total = 0;
       this.itemCart.forEach((item) => (this.total += parseFloat(item.price)));
     },
     close() {

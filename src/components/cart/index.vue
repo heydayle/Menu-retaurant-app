@@ -70,7 +70,9 @@
         </v-card-title>
         <v-card-text v-if="listItem.length > 0">
           <div class="tw-space-x-4 tw-font-semibold">
+            <span>Index</span>
             <span>Name</span>
+            <span>Process</span>
             <span>Sugar</span>
             <span>Ice</span>
           </div>
@@ -79,7 +81,9 @@
             :key="index"
             class="tw-flex tw-space-x-4 tw-items-center"
           >
-            <div class="tw-w-14">{{ item.name }}</div>
+            <div class="tw-w-8 tw-text-center">{{ index + 1 }}</div>
+            <div class="tw-w-16">{{ item.name }}</div>
+            <div class="tw-w-10">{{ item.process }}</div>
             <div class="tw-w-6">{{ item.sugar }}</div>
             <div class="tw-min-w-10">{{ item.ice }}</div>
             <div class="tw-min-w-10">
@@ -103,8 +107,18 @@
               </v-btn>
             </div>
           </div>
-          <div class="tw-space-x-4 tw-font-semibold">
+          <div class="tw-space-x-4 tw-flex tw-font-semibold tw-items-center">
             <span class="tw-text-xl">Total: {{ total | currency }}</span>
+            <v-btn
+              large
+              :light="false"
+              :dark="false"
+              elevation="2"
+              class="tw-bg-green-500 tw-m-auto c-v-btn clear"
+              @click="removeAllItem"
+            >
+              Clear all
+            </v-btn>
           </div>
         </v-card-text>
         <v-card-text v-else>Empty</v-card-text>
@@ -139,22 +153,14 @@ export default {
         this.$emit("update", this.list);
       },
     },
-    // total: {
-    //   get: function () {
-    //     let total = 0;
-    //     let arr = this?.list ? this?.list : [];
-    //     arr.forEach((item) => (total += parseFloat(item.price)));
-    //     return total;
-    //   },
-    //   set: function () {
-    //     this.$emit("update", this.list);
-    //   },
-    // },
   },
   methods: {
     removeItem(item) {
       this.list = this.list.filter((itemList) => itemList.uid !== item.uid);
       this.$emit("update", this.list);
+    },
+    removeAllItem() {
+      this.$emit("update", []);
     },
   },
 };
@@ -169,7 +175,7 @@ export default {
 }
 .c-v-dialog-cart {
   .v-dialog {
-    max-width: 400px;
+    max-width: 350px;
   }
 }
 </style>

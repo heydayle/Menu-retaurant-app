@@ -55,7 +55,22 @@
                     </v-btn>
                   </template>
                   <v-list>
-                    <v-list-item class="tw-w-64 tw-space-x-4">
+                    <v-list-item class="tw-space-x-4">
+                      <v-radio-group
+                        class="tw-mb-auto"
+                        v-if="item.process == 2"
+                        v-model="radioProcess"
+                      >
+                        <template v-slot:label>
+                          <div><strong>Process</strong></div>
+                        </template>
+                        <v-radio
+                          v-for="(item, index) in ProcessingType"
+                          :key="index"
+                          :label="item.text"
+                          :value="item.value"
+                        ></v-radio>
+                      </v-radio-group>
                       <v-radio-group v-model="radioSugar">
                         <template v-slot:label>
                           <div><strong>Sugar</strong></div>
@@ -67,7 +82,10 @@
                           :value="item.value"
                         ></v-radio>
                       </v-radio-group>
-                      <v-radio-group v-model="radioIce">
+                      <v-radio-group
+                        v-model="radioIce"
+                        :disabled="radioProcess < 2"
+                      >
                         <template v-slot:label>
                           <div><strong>Ice</strong></div>
                         </template>
@@ -78,37 +96,31 @@
                           :value="item.value"
                         ></v-radio>
                       </v-radio-group>
-                      <v-btn
-                        icon
-                        large
-                        color="blue"
-                        elevation="2"
-                        class="tw-bg-green-500 tw-m-auto"
-                        @click="select(item, radioSugar, radioIce)"
-                      >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          xmlns:xlink="http://www.w3.org/1999/xlink"
-                          aria-hidden="true"
-                          role="img"
-                          class="iconify iconify--icons8 tw-text-white"
-                          width="32"
-                          height="32"
-                          preserveAspectRatio="xMidYMid meet"
-                          viewBox="0 0 32 32"
-                        >
-                          <path
-                            d="M4 7a1 1 0 0 0 0 2h2.22l2.624 10.5c.223.89 1.02 1.5 1.937 1.5h12.47c.903 0 1.67-.6 1.907-1.47L27.75 10h-2.094l-2.406 9H10.78L8.157 8.5A1.984 1.984 0 0 0 6.22 7H4zm18 14c-1.645 0-3 1.355-3 3s1.355 3 3 3s3-1.355 3-3s-1.355-3-3-3zm-9 0c-1.645 0-3 1.355-3 3s1.355 3 3 3s3-1.355 3-3s-1.355-3-3-3zm3-14v3h-3v2h3v3h2v-3h3v-2h-3V7h-2zm-3 16c.564 0 1 .436 1 1c0 .564-.436 1-1 1c-.564 0-1-.436-1-1c0-.564.436-1 1-1zm9 0c.564 0 1 .436 1 1c0 .564-.436 1-1 1c-.564 0-1-.436-1-1c0-.564.436-1 1-1z"
-                            fill="currentColor"
-                          ></path>
-                        </svg>
-                      </v-btn>
                     </v-list-item>
+                    <v-btn
+                      large
+                      :light="false"
+                      :dark="false"
+                      color="blue"
+                      elevation="2"
+                      class="tw-bg-green-500 tw-m-auto c-v-btn"
+                      @click="select(item, radioSugar, radioIce, radioProcess)"
+                    >
+                      Add to cart
+                    </v-btn>
                   </v-list>
                 </v-menu>
               </div>
             </div>
           </swiper-slide>
+          <div
+            class="swiper-button-prev swiper-button-white"
+            slot="button-prev"
+          ></div>
+          <div
+            class="swiper-button-next swiper-button-white"
+            slot="button-next"
+          ></div>
         </swiper>
       </div>
     </v-card>
@@ -153,20 +165,26 @@ export default {
           modifier: 1,
           slideShadows: true,
         },
+        navigation: {
+          nextEl: ".swiper-button-next",
+          prevEl: ".swiper-button-prev",
+        },
         pagination: {
           el: ".swiper-pagination",
         },
       },
-      radioSugar: 1,
-      radioIce: 1,
+      radioSugar: 0,
+      radioIce: 0,
+      radioProcess: 0,
     };
   },
   methods: {
-    select(item, sugar, ice) {
+    select(item, sugar, ice, process) {
       this.$emit("onSelect", {
         ...item,
         sugar: sugar,
         ice: ice,
+        process: process,
         uid: uuidv4(),
       });
     },
@@ -203,7 +221,7 @@ export default {
 }
 
 .swiper {
-  height: 100vh;
+  height: 70vh;
   width: 100%;
 
   .swiper-slide {
@@ -236,5 +254,14 @@ export default {
 }
 .v-input--selection-controls__input input[role="radio"] {
   opacity: 1 !important;
+}
+.c-v-btn {
+  background: #10b981 !important;
+  color: white !important;
+}
+
+.c-v-btn.clear {
+  font-size: 13px;
+  background: rgb(255, 96, 96) !important;
 }
 </style>
